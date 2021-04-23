@@ -22,7 +22,7 @@ This library currently supports:
 Install this package with composer
 
 ```shell
-composer require shabananavas/php-bluesnap-sdk
+composer require vamajordy/php-bluesnap-sdk
 ```
 
 ### Usage

@@ -13,8 +13,7 @@ class Api
         $credentials = Bluesnap::getCredentials();
         $base_url = Bluesnap::getBaseUrl();
 
-        if (!$credentials)
-        {
+        if (!$credentials) {
             throw new MissingFieldsException('No BlueSnap credentials provided');
         }
 
@@ -33,7 +32,8 @@ class Api
     {
         $client = self::getClient();
 
-        $args = null;
+        $args = [];
+        
         if ($query_params && is_array($query_params)) {
             $args = [ 'query' => $query_params ];
         }
@@ -41,8 +41,7 @@ class Api
         $id_string = $id ? '/'. $id : '';
         $response = $client->get($endpoint . $id_string, $args);
 
-        if ($response->getStatusCode() === 200)
-        {
+        if ($response->getStatusCode() === 200) {
             $data = json_decode($response->getBody()->getContents());
 
             return $data;
@@ -55,26 +54,25 @@ class Api
     {
         $client = self::getClient();
 
-    //    $clientHandler = $client->getConfig('handler');
-    //    $tapMiddleware = Middleware::tap(function ($request) {
-    //        echo "Request data:\n\ncontent-type: ". $request->getHeaderLine('Content-Type') ."\n";
-    //        echo "body: ". $request->getBody() ."\n\nResponse data:\n\n";
-    //    });
+        //    $clientHandler = $client->getConfig('handler');
+        //    $tapMiddleware = Middleware::tap(function ($request) {
+        //        echo "Request data:\n\ncontent-type: ". $request->getHeaderLine('Content-Type') ."\n";
+        //        echo "body: ". $request->getBody() ."\n\nResponse data:\n\n";
+        //    });
 
         $response = $client->post($endpoint, [
             'json' => $data,
         //    'handler' => $tapMiddleware($clientHandler)
         ]);
 
-        if ($response->getStatusCode() === 200 || $response->getStatusCode() === 201)
-        {
+        if ($response->getStatusCode() === 200 || $response->getStatusCode() === 201) {
             if ($id_in_header && $response->hasHeader('Location')) {
                 $location = $response->getHeader('Location');
                 $location_array = explode('/', $location[0]);
 
                 // If we're fetching a Hosted Payment Fields token, return that.
                 if ($endpoint == 'payment-fields-tokens') {
-                  return ['hosted_payment_fields_token' => $location_array[6]];
+                    return ['hosted_payment_fields_token' => $location_array[6]];
                 }
 
                 $model_id = end($location_array);
@@ -108,8 +106,7 @@ class Api
 
         $response = $client->put($endpoint, $options);
 
-        if ($response->getStatusCode() === 200 || $response->getStatusCode() === 204)
-        {
+        if ($response->getStatusCode() === 200 || $response->getStatusCode() === 204) {
             return json_decode($response->getBody()->getContents());
         }
 
@@ -122,8 +119,7 @@ class Api
 
         $response = $client->delete($endpoint);
 
-        if ($response->getStatusCode() === 204)
-        {
+        if ($response->getStatusCode() === 204) {
             return [];
         }
 

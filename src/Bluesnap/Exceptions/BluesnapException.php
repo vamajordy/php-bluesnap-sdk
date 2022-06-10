@@ -12,8 +12,8 @@ abstract class BluesnapException extends Exception implements ExceptionInterface
 
     protected $message = '';
     protected $code = 0;
-    protected $file;
-    protected $line;
+    protected string $file;
+    protected int $line;
 
     public function __construct($message = null, $code = 0)
     {

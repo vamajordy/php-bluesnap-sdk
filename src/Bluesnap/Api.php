@@ -39,7 +39,7 @@ class Api
         }
 
         $id_string = $id ? '/'. $id : '';
-        $response = $client->get($endpoint . $id_string, $args);
+        $response = $client->get($endpoint . $id_string, $args ?? []);
 
         if ($response->getStatusCode() === 200)
         {
